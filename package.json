@@ -1,12 +1,19 @@
 {
   "name": "servicehooks",
   "private": false,
-  "version": "0.0.2",
-  "type": "module", 
+  "version": "0.0.3",
   "files": [
     "lib"
   ],
-  "main": "./lib",
+  "main": "./lib/index.umd.js",
+  "module": "./lib/index.es.js",
+  "unpkg": "./lib/index.min.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.es.js",
+      "require": "./lib/index.umd.js"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "test": "vitest",
