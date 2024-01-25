@@ -24,8 +24,12 @@ export default ({ mode }) => {
       outDir: "lib",
       sourcemap: true,
       lib: {
-        entry: packageFolders.map(folderName => path.resolve(__dirname, `packages/${folderName}/index.ts`)),
+        entry: packageFolders.reduce((r, folderName) => {
+          r[folderName] = path.resolve(__dirname, `packages/${folderName}/index.ts`)
+          return r
+        },{}),
         name,
+        fileName: (format, fileName, c) => `${fileName}.${format}.js`,
       },
       rollupOptions: {
         external: ["vue", "svg"],
