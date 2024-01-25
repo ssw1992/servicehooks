@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sources":["../packages/basic/index.ts"],"sourcesContent":["export const sum = (num1: number, num2: number): number => {\r\n  return num1 + num2\r\n}"],"names":["sum","num1","num2"],"mappings":"AAAa,MAAAA,IAAM,CAACC,GAAcC,MACzBD,IAAOC;"}
