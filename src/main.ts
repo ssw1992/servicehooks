@@ -1,1 +1,2 @@
-console.log('11111')
+import { useSubscribe } from '../packages/index';
+console.log(useSubscribe);

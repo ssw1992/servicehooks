@@ -1,6 +1,5 @@
 import { onUnmounted } from "vue";
 
-
 export const useSubscribe = () => {
   const theArr: any[] = [];
 
@@ -27,6 +26,6 @@ export const useSubscribe = () => {
   return {
     subscribe,
     publish,
-    unsubscribe
+    unsubscribe,
   };
 };
