@@ -6,5 +6,5 @@ export default defineConfig({
   sourcemap: true,
   dts: true,
   clean: true,
-  outDir: 'lib',
+  outDir: 'types',
 });

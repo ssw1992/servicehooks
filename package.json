@@ -1,7 +1,7 @@
 {
   "name": "servicehooks",
   "private": false,
-  "version": "0.0.4",
+  "version": "0.0.5",
   "files": [
     "lib"
   ],
@@ -14,15 +14,14 @@
       "require": "./lib/index.umd.js"
     }
   },
-  "types": "./lib/index.d.ts",
+  "types": "./types/index.d.ts",
   "scripts": {
     "dev": "vite",
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "build": "vue-tsc --noEmit && vite build",
-    "build-t": "vite build --mode npm && tsup",
-    "build-npm": "vue-tsc && vite build --mode npm",
-    "publish-main": "npm run build-npm && npm publish --access public",
+    "build-npm": "vite build --mode npm && tsup",
+    "publish-main": "npm run build-npm && npm publish --access public --registry https://registry.npmjs.org",
     "publish-beta": "npm run publish-main --tag beta",
     "preview": "vite preview"
   },
