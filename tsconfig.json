@@ -11,7 +11,6 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "preserve",
 
     /* Linting */
@@ -21,8 +20,13 @@
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "@packages/*": ["./packages/*"]
-    }
+    },
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "lib",
+
+    "baseUrl": "."
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue","packages/**/*.ts", "packages/**/*.tsx", "packages/**/*.vue"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue","packages/**/*.ts", "packages/**/*.tsx", "packages/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
