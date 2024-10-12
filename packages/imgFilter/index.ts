@@ -219,7 +219,7 @@ export const useImgFilter = (imgRef: Ref<HTMLImageElement>) => {
     /** 增加亮度 */
     styleBrightening: async (delta = 50) => {
       const { ctx, imageData, traverseImgPixel } = await loadImg()
-      traverseImgPixel(({ r, g, b, setR, setG, setB }) => {
+      traverseImgPixel(({ r, setR, setG, setB }) => {
         setR(r + delta)
         setG(0)
         setB(0)
@@ -247,7 +247,7 @@ export const useImgFilter = (imgRef: Ref<HTMLImageElement>) => {
     },
     /** 雾化 */
     styleAtomize: async () => {
-      const { ctx, imageData, reverseTraverseImgPixel, w, h } = await loadImg()
+      const { ctx, imageData, reverseTraverseImgPixel } = await loadImg()
       reverseTraverseImgPixel(({ index, setByIndex }) => {
         if (Math.random() < 0.1) {
           setByIndex(index, 255)
@@ -266,7 +266,6 @@ export const useImgFilter = (imgRef: Ref<HTMLImageElement>) => {
         traverseRgba,
         countPosi,
         w,
-        h,
       } = await loadImg()
       traverseImgPixel(({ index, setByIndex, getByIndex }) => {
         const { x, y } = countPosi(index, w)
