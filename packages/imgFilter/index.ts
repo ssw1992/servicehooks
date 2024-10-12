@@ -144,7 +144,7 @@ export const useImgFilter = (imgRef: Ref<HTMLImageElement>) => {
       }
     }
 
-    const countPosi = (index: number, w: number, h: number) => {
+    const countPosi = (index: number, w: number) => {
       const y = parseInt(index / (w * 4) + '')
       const rowIndex = index - y * w * 4
       const x = parseInt(rowIndex / 4 + '')
@@ -269,7 +269,7 @@ export const useImgFilter = (imgRef: Ref<HTMLImageElement>) => {
         h,
       } = await loadImg()
       traverseImgPixel(({ index, setByIndex, getByIndex }) => {
-        const { x, y } = countPosi(index, w, h)
+        const { x, y } = countPosi(index, w)
         traverseRgba((rgbaIndex) => {
           if (rgbaIndex < 3) {
             const round = Math.floor(Math.random() * 10) % 3
