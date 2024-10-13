@@ -33,7 +33,6 @@ export const imgFileToImgSrc = (file: File) => {
   })
 }
 
-
 /**
  * 将HTMLImageElement元素绘制到HTMLCanvasElement上
  *
@@ -125,8 +124,8 @@ export const countPosi = (index: number, w: number) => {
 
 export const loadImgToCanvas = (imgDom: HTMLImageElement) => {
   const canvasDom = document.createElement('canvas')
-  //   canvasRef.value.style.position = "fixed";
-  //   canvasRef.value.style.opacity = "0";
+  canvasDom.style.position = 'fixed'
+  canvasDom.style.opacity = '0'
   document.body.appendChild(canvasDom)
 
   const ctx = imgToCanvas(imgDom, canvasDom)
