@@ -44,10 +44,10 @@ export const imgToCanvas = (
   imgDom: HTMLImageElement,
   canvasDom: HTMLCanvasElement
 ) => {
-  canvasDom.width = imgDom.clientWidth // 使用图像的原始宽度
-  canvasDom.height = imgDom.clientHeight // 使用图像的原始高度
+  canvasDom.width = imgDom.naturalWidth // 使用图像的原始宽度
+  canvasDom.height = imgDom.naturalHeight // 使用图像的原始高度
   const ctx = canvasDom.getContext('2d')!
-  ctx.drawImage(imgDom, 0, 0, imgDom.clientWidth, imgDom.clientHeight) // 绘制图像时使用原始尺寸
+  ctx.drawImage(imgDom, 0, 0, imgDom.naturalWidth, imgDom.naturalHeight) // 绘制图像时使用原始尺寸
   return ctx
 }
 
