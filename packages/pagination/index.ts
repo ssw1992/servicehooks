@@ -34,9 +34,10 @@ export const usePagination = (request: (params: TheObject) => Promise<any>, para
         num: num.value,
         size: size.value
       })
-      const { data, total } = getData(await request(queryParams));
-      list.value = listSolve(data);
-      total.value = total;
+      const response = await request(queryParams);
+      const data = getData(response);
+      list.value = listSolve(data.data);
+      total.value = data.total;
     } catch (error) {
       console.error(error);
     } finally {
@@ -50,7 +51,7 @@ export const usePagination = (request: (params: TheObject) => Promise<any>, para
 
   const refresh = () => getPagination();
   const reset = () => {
-    num.value = 0
+    num.value = 1
     total.value = 0
     list.value = []
   };
@@ -61,8 +62,7 @@ export const usePagination = (request: (params: TheObject) => Promise<any>, para
   };
   const onSizeChange = (val: number) => {
     size.value = val;
-    num.value = 1;
-    return getPagination();
+    return search();
   };
 
 
@@ -119,19 +119,19 @@ export const useContinuousPagination = (request: (params: TheObject) => Promise<
         num: num.value,
         size: size.value
       })
-      const { data, total } = getData(await request(queryParams));
+      const response = await request(queryParams);
+      const data = getData(response);
       if (num.value === 1) {
-        list.value = listSolve(data);
+        list.value = listSolve(data.data);
 
       } else {
-        list.value.push(...listSolve(data));
+        list.value.push(...listSolve(data.data));
       }
-      total.value = total;
+      total.value = data.total;
     } catch (error) {
       console.error(error);
-    } finally {
-      isLoading.value = false;
     }
+    isLoading.value = false;
   };
   const search = () => {
     num.value = 1;
@@ -153,7 +153,7 @@ export const useContinuousPagination = (request: (params: TheObject) => Promise<
 
   };
   const reset = () => {
-    num.value = 0
+    num.value = 1
     total.value = 0
     list.value = []
   };
