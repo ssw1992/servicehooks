@@ -21,9 +21,8 @@
     "dev": "vite",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "build": "vue-tsc --noEmit && vite build",
-    "build-npm": "vite build --mode npm && tsup",
-    "publish-main": "npm run build-npm && npm publish --access public --registry https://registry.npmjs.org",
+    "build": "vite build --mode npm && tsup",
+    "publish-main": "npm publish --access public --registry https://registry.npmjs.org",
     "publish-beta": "npm run publish-main --tag beta",
     "preview": "vite preview"
   },

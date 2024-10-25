@@ -1,4 +1,3 @@
-import { ref } from 'vue';
 import { useContinuousPagination } from '../pagination'; // 假设函数在此文件中
 import { describe, it, expect, vi } from 'vitest';
 
@@ -20,7 +19,7 @@ const mockRequest = (params: any) => {
 
 describe('useContinuousPagination', () => {
     it('should load initial data correctly', async () => {
-        const { list, isLoading, total } = useContinuousPagination(mockRequest, ref({}), { immediate: true });
+        const { list, isLoading, total } = useContinuousPagination(mockRequest, { immediate: true });
         await vi.waitFor(() => {
             if (isLoading.value) {
                 throw new Error('Server not started')
@@ -31,7 +30,7 @@ describe('useContinuousPagination', () => {
     });
 
     it('should load next page correctly', async () => {
-        const { list, num, loadNext } = useContinuousPagination(mockRequest, ref({}));
+        const { list, num, loadNext } = useContinuousPagination(mockRequest);
 
         // 初始加载
         expect(list.value).toEqual([]); // 因为没有设置immediate，所以初始为空
@@ -51,7 +50,7 @@ describe('useContinuousPagination', () => {
     });
 
     it('should reset pagination correctly', async () => {
-        const { list, total, num, reset } = useContinuousPagination(mockRequest, ref({}), { immediate: true });
+        const { list, total, num, reset } = useContinuousPagination(mockRequest, { immediate: true });
         // 执行重置操作
         reset();
         expect(list.value).toEqual([]);
