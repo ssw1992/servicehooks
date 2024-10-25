@@ -1,7 +1,7 @@
 {
   "name": "servicehooks",
   "private": false,
-  "version": "0.0.13",
+  "version": "0.0.14",
   "files": [
     "lib",
     "types"
@@ -11,6 +11,7 @@
   "unpkg": "./lib/index.min.js",
   "exports": {
     ".": {
+      "types": "./types/index.d.ts",
       "import": "./lib/index.es.js",
       "require": "./lib/index.umd.js"
     }
