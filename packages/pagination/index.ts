@@ -1,15 +1,24 @@
 import { ref, watch } from "vue";
 import type { Ref } from "vue";
 
-
-
-
 type TheObject = { [key: string]: any }
 
-export const usePagination = (request: (params: TheObject) => Promise<any>, params?: Ref, config?: any) => {
+type PaginationConfig = {
+  params?: Ref;
+  size?: number;
+  getParams?: (obj: TheObject) => TheObject;
+  getResponse?: (obj: TheObject) => {
+    data: any[];
+    total: number
+  };
+  watchPage?: boolean;
+  immediate?: boolean;
+}
+
+export const usePagination = (request: (params: TheObject) => Promise<any>, config?: PaginationConfig) => {
   config = config || {}
-  const { listConverter, watchPage = true } = config || {};
-  params = params || ref<TheObject>({});
+  const { watchPage = true } = config || {};
+  const params = config.params || ref<TheObject>({});
   const num = ref(1);
   const size = ref(config.size || 20);
   const total = ref(0);
@@ -19,12 +28,6 @@ export const usePagination = (request: (params: TheObject) => Promise<any>, para
 
   const getParams = config.getParams || ((params: TheObject) => params)
   const getData = config.getResponse || ((response: TheObject) => response.data)
-
-
-  const listSolve = (arr: any[] | null) => {
-    arr = arr || [];
-    return listConverter ? listConverter(arr) : arr;
-  };
 
   const getPagination = async () => {
     isLoading.value = true;
@@ -36,7 +39,7 @@ export const usePagination = (request: (params: TheObject) => Promise<any>, para
       })
       const response = await request(queryParams);
       const data = getData(response);
-      list.value = listSolve(data.data);
+      list.value = data.data;
       total.value = data.total;
     } catch (error) {
       console.error(error);
@@ -91,10 +94,10 @@ export const usePagination = (request: (params: TheObject) => Promise<any>, para
 
 
 
-export const useContinuousPagination = (request: (params: TheObject) => Promise<any>, params?: Ref, config?: any) => {
+export const useContinuousPagination = (request: (params: TheObject) => Promise<any>, config?: PaginationConfig) => {
   config = config || {}
-  const { listConverter, watchPage = true } = config;
-  params = params || ref<TheObject>({});
+  const { watchPage = true } = config;
+  const params = config.params || ref<TheObject>({});
   const num = ref(1);
   const size = ref(config.size || 20);
   const total = ref(0);
@@ -105,11 +108,6 @@ export const useContinuousPagination = (request: (params: TheObject) => Promise<
   const getParams = config.getParams || ((params: TheObject) => params)
   const getData = config.getResponse || ((response: TheObject) => response.data)
 
-
-  const listSolve = (arr: any[] | null) => {
-    arr = arr || [];
-    return listConverter ? listConverter(arr) : arr;
-  };
 
   const getPagination = async () => {
     isLoading.value = true;
@@ -122,12 +120,11 @@ export const useContinuousPagination = (request: (params: TheObject) => Promise<
       const response = await request(queryParams);
       const data = getData(response);
       if (num.value === 1) {
-        list.value = listSolve(data.data);
-
+        list.value = data.data || [];
+        total.value = data.total;
       } else {
-        list.value.push(...listSolve(data.data));
+        list.value.push(...(data.data || []));
       }
-      total.value = data.total;
     } catch (error) {
       console.error(error);
     }
