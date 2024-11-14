@@ -41,7 +41,7 @@ const asyncChainTask = async (
  * @param config 实体管理配置对象
  * @returns 返回实体管理相关的响应式引用和方法
  */
-export const useEntityManage = (config: EntityManageConfig) => {
+export const useEntityManager = (config: EntityManageConfig) => {
   const entity = ref<TheObject>(config.entity || {});
   const errorTipMap = ref<TheObject>({});
   const validateLoadingMap = ref<TheObject>({});
@@ -132,7 +132,7 @@ export const useEntityManage = (config: EntityManageConfig) => {
   };
 
   const isLoading = computed(
-    () => isAdding.value || isEditing.value || isDeling.value
+    () => isAdding.value || isEditing.value || isDeling.value || isValidating.value
   );
 
   return {

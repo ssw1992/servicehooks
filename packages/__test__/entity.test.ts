@@ -1,7 +1,7 @@
-import { useEntityManage } from "../entity/index";
+import { useEntityManager } from "../entity/index";
 import { describe, it, expect } from "vitest";
 type TheObject = { [key: string]: any };
-describe("useEntityManage", () => {
+describe("useEntityManager", () => {
   it("should return correct result", async () => {
     const config = {
       isReturnEntity: true,
@@ -48,7 +48,7 @@ describe("useEntityManage", () => {
       errorTipMap,
       validate,
       clearValidate,
-    } = useEntityManage(config);
+    } = useEntityManager(config);
 
     entity.value = {
       name: "test",
