@@ -1,4 +1,4 @@
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import type { Ref } from "vue";
 
 type TheObject = { [key: string]: any }
@@ -24,6 +24,7 @@ export const usePagination = (request: (params: TheObject) => Promise<any>, conf
   const total = ref(0);
   const list = ref<any[]>([]);
   const isLoading = ref(false);
+  const isLast = computed(() => total.value <= num.value * size.value);
 
 
   const getParams = config.getParams || ((params: TheObject) => params)
@@ -83,6 +84,7 @@ export const usePagination = (request: (params: TheObject) => Promise<any>, conf
     total,
     list,
     isLoading,
+    isLast,
     search,
     onNumChange,
     onSizeChange,
@@ -103,6 +105,7 @@ export const useContinuousPagination = (request: (params: TheObject) => Promise<
   const total = ref(0);
   const list = ref<any[]>([]);
   const isLoading = ref(false);
+  const isLast = computed(() => total.value <= num.value * size.value);
 
 
   const getParams = config.getParams || ((params: TheObject) => params)
@@ -170,6 +173,7 @@ export const useContinuousPagination = (request: (params: TheObject) => Promise<
     total,
     list,
     isLoading,
+    isLast,
     search,
     loadNext,
     refresh,
