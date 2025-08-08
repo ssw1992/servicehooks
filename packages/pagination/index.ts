@@ -24,7 +24,7 @@ export const usePagination = (request: (params: TheObject) => Promise<any>, conf
   const total = ref(0);
   const list = ref<any[]>([]);
   const isLoading = ref(false);
-  const isLast = computed(() => total.value <= num.value * size.value);
+  const isLast = computed(() => total.value <= num.value * size.value && total.value && !isLoading.value);
 
 
   const getParams = config.getParams || ((params: TheObject) => params)
@@ -105,7 +105,7 @@ export const useContinuousPagination = (request: (params: TheObject) => Promise<
   const total = ref(0);
   const list = ref<any[]>([]);
   const isLoading = ref(false);
-  const isLast = computed(() => total.value <= num.value * size.value);
+  const isLast = computed(() => total.value <= num.value * size.value && total.value && !isLoading.value);
 
 
   const getParams = config.getParams || ((params: TheObject) => params)
