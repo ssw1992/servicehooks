@@ -40,7 +40,7 @@ export const usePagination = (request: (params: TheObject) => Promise<any>, conf
       })
       const response = await request(queryParams);
       const data = getData(response);
-      list.value = data.data;
+      list.value = [...(data.data || [])];
       total.value = data.total;
     } catch (error) {
       console.error(error);
@@ -123,7 +123,7 @@ export const useContinuousPagination = (request: (params: TheObject) => Promise<
       const response = await request(queryParams);
       const data = getData(response);
       if (num.value === 1) {
-        list.value = data.data || [];
+        list.value = [...(data.data || [])];
         total.value = data.total;
       } else {
         list.value.push(...(data.data || []));
