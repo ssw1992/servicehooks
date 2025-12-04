@@ -81,7 +81,6 @@ export const useEntityManager = (config: EntityManageConfig) => {
     if (config.requestAdd) {
       try {
         const data = await config.requestAdd(entity.value);
-        console.log("ss", data);
         if (config.isReturnEntity && data) {
           entity.value = data;
         }

@@ -1,5 +1,5 @@
 import { computed, ref, watch } from "vue";
-import type { Ref } from "vue";
+import type { Ref, WatchHandle } from "vue";
 
 type TheObject = { [key: string]: any }
 
@@ -24,7 +24,16 @@ export const usePagination = (request: (params: TheObject) => Promise<any>, conf
   const total = ref(0);
   const list = ref<any[]>([]);
   const isLoading = ref(false);
-  const isLast = computed(() => total.value <= num.value * size.value && total.value && !isLoading.value);
+  const isLast = computed(() => !!(total.value <= num.value * size.value && total.value && !isLoading.value));
+  let numWatcher: WatchHandle | undefined
+
+  const pauseNumWatcher = () => {
+    numWatcher?.pause()
+  }
+  const resumeNumWatcher = () => {
+    numWatcher?.resume()
+  }
+
 
 
   const getParams = config.getParams || ((params: TheObject) => params)
@@ -49,20 +58,28 @@ export const usePagination = (request: (params: TheObject) => Promise<any>, conf
     }
   };
   const search = () => {
+    pauseNumWatcher()
     num.value = 1;
-    return getPagination();
+    return getPagination().finally(() => {
+      resumeNumWatcher()
+    });
   };
 
   const refresh = () => getPagination();
   const reset = () => {
+    pauseNumWatcher()
     num.value = 1
     total.value = 0
     list.value = []
+    resumeNumWatcher()
   };
 
   const onNumChange = (val: number) => {
+    pauseNumWatcher()
     num.value = val;
-    return getPagination();
+    return getPagination().finally(() => {
+      resumeNumWatcher()
+    });
   };
   const onSizeChange = (val: number) => {
     size.value = val;
@@ -105,7 +122,16 @@ export const useContinuousPagination = (request: (params: TheObject) => Promise<
   const total = ref(0);
   const list = ref<any[]>([]);
   const isLoading = ref(false);
-  const isLast = computed(() => total.value <= num.value * size.value && total.value && !isLoading.value);
+  const isLast = computed(() => !!(total.value <= num.value * size.value && total.value && !isLoading.value));
+
+  let numWatcher: WatchHandle | undefined
+  const pauseNumWatcher = () => {
+    numWatcher?.pause()
+  }
+  const resumeNumWatcher = () => {
+    numWatcher?.resume()
+  }
+
 
 
   const getParams = config.getParams || ((params: TheObject) => params)
@@ -134,33 +160,47 @@ export const useContinuousPagination = (request: (params: TheObject) => Promise<
     isLoading.value = false;
   };
   const search = () => {
+    pauseNumWatcher()
     num.value = 1;
-    return getPagination();
+    return getPagination().finally(() => {
+      resumeNumWatcher()
+    });
   };
 
   const loadNext = (val: number) => {
+    pauseNumWatcher()
     num.value = val;
-    return getPagination();
+    return getPagination().finally(() => {
+      resumeNumWatcher()
+    });
   };
 
   const refresh = async () => {
+    pauseNumWatcher()
     const lastNum = num.value
     const lastSize = size.value
-    size.value = num.value * lastNum
-    await search
-    num.value = lastNum
-    size.value = lastSize
+    num.value = 1
+    size.value = lastNum * lastSize
+    await getPagination().finally(() => {
+      num.value = lastNum
+      size.value = lastSize
+      resumeNumWatcher()
+    })
 
   };
   const reset = () => {
+    pauseNumWatcher()
     num.value = 1
     total.value = 0
     list.value = []
+    resumeNumWatcher()
   };
 
+
   if (watchPage) {
-    watch(() => num.value, loadNext);
+    numWatcher = watch(() => num.value, loadNext);
   }
+
 
   if (config.immediate) {
     search()

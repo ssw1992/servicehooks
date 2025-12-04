@@ -8,7 +8,6 @@ describe("useEntityManager", () => {
       rules: {
         name: [
           (val: any) => {
-            console.log("val", val);
             if (!val) {
               throw "请填写";
             }
@@ -61,7 +60,6 @@ describe("useEntityManager", () => {
     expect(isEditing.value).toBe(false);
     expect(isDeling.value).toBe(false);
     expect(isValidating.value).toBe(false);
-    console.log('errorTipMap.value', errorTipMap.value)
     expect(errorTipMap.value).toEqual({});
 
     entity.value.name = 't'
