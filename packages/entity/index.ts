@@ -4,9 +4,8 @@
 // 各种业务操作状态可感知
 // 各种业务操作默认支持防抖，防重复提交
 
-import { computed, ref } from "vue";
+import { computed, isRef, ref } from "vue";
 
-type TheObject = { [key: string]: any };
 
 type EntityManageConfig = {
   requestAdd?: (entity: TheObject) => Promise<TheObject | null>;
@@ -152,3 +151,62 @@ export const useEntityManager = (config: EntityManageConfig) => {
     clearValidate,
   };
 };
+
+
+
+export const useDataSearch = <T>(
+  searchRequest: (params: TheObject) => Promise<T>,
+  {
+
+    params,
+    defaultData,
+    immediate,
+    afterSearch
+  }: {
+    params?: TheObject,
+    defaultData?: T,
+    immediate?: boolean,
+    afterSearch?: (config: {
+      isImmediateSearch: boolean
+    }) => void
+  } = {}
+) => {
+  params = isRef(params) ? params : ref(params || {});
+  const data = ref<T>(JSON.parse(JSON.stringify(defaultData || {})));
+  const isLoading = ref(false);
+
+  const search = async () => {
+    isLoading.value = true;
+    try {
+      data.value = await searchRequest(params.value)
+      afterSearch && afterSearch({
+        isImmediateSearch
+      })
+
+    } catch (error) {
+      console.error(error);
+    }
+    isLoading.value = false;
+  }
+
+  const reset = () => {
+    data.value = JSON.parse(JSON.stringify(defaultData || {}));
+  }
+
+  let isImmediateSearch = false
+  if (immediate) {
+    isImmediateSearch = true
+    search().finally(() => {
+      isImmediateSearch = false
+    })
+  }
+
+  return {
+    params,
+    data,
+    isLoading,
+    search,
+    reset
+  }
+
+}

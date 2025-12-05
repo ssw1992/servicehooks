@@ -1,7 +1,6 @@
 import { computed, ref, watch } from "vue";
 import type { Ref, WatchHandle } from "vue";
 
-type TheObject = { [key: string]: any }
 
 type PaginationConfig = {
   params?: Ref;
